@@ -1,9 +1,9 @@
 [package]
-name = "r2d2-diesel"
+name = "r2d2-diesel-mysql"
 version = "1.0.0"
 authors = ["Sean Griffin <sean@seantheprogrammer.com>"]
 license = "MIT"
-description = "r2d2 support for Diesel"
+description = "r2d2 support for Diesel with MySQL fix"
 homepage = "https://github.com/sgrif/r2d2-diesel"
 repository = "https://github.com/sgrif/r2d2-diesel"
 
