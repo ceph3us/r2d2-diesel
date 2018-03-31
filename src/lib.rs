@@ -48,22 +48,27 @@ impl ::std::error::Error for Error {
     }
 }
 
-impl<T> ManageConnection for ConnectionManager<T> where
-    T: Connection + Send + 'static,
+impl ManageConnection for ConnectionManager<diesel::mysql::MysqlConnection> where
+    MysqlConnection: Connection + Send + 'static,
 {
-    type Connection = T;
+    type Connection = MysqlConnection;
     type Error = Error;
 
-    fn connect(&self) -> Result<T, Error> {
-        T::establish(&self.database_url)
+    fn connect(&self) -> Result<MysqlConnection, Error> {
+        MysqlConnection::establish(&self.database_url)
             .map_err(Error::ConnectionError)
     }
 
-    fn is_valid(&self, conn: &mut T) -> Result<(), Error> {
-        conn.execute("SELECT 1").map(|_| ()).map_err(Error::QueryError)
+    // ::diesel::expression::sql_literal::sql
+    fn is_valid(&self, conn: &mut MysqlConnection) -> Result<(), Error> {
+        // conn.execute("SELECT 1").map(|_| ()).map_err(Error::QueryError)
+        ::diesel::expression::sql_literal::sql::<::diesel::types::Bool>("SELECT 1")
+            .get_result::<bool>(conn)
+            .map(|_| ())
+            .map_err(Error::QueryError)
     }
 
-    fn has_broken(&self, _conn: &mut T) -> bool {
+    fn has_broken(&self, _conn: &mut MysqlConnection) -> bool {
         false
     }
 }
