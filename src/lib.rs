@@ -1,7 +1,7 @@
 extern crate diesel;
 extern crate r2d2;
 
-use diesel::{Connection, ConnectionError};
+use diesel::{Connection, ConnectionError, MysqlConnection};
 use r2d2::ManageConnection;
 use std::convert::Into;
 use std::fmt;
