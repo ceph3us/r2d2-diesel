@@ -61,6 +61,8 @@ impl ManageConnection for ConnectionManager<diesel::mysql::MysqlConnection> wher
 
     // ::diesel::expression::sql_literal::sql
     fn is_valid(&self, conn: &mut MysqlConnection) -> Result<(), Error> {
+        use diesel::RunQueryDsl;
+        
         // conn.execute("SELECT 1").map(|_| ()).map_err(Error::QueryError)
         ::diesel::expression::sql_literal::sql::<::diesel::types::Bool>("SELECT 1")
             .get_result::<bool>(conn)
